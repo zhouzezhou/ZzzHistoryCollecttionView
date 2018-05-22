@@ -24,9 +24,14 @@
 
 //@property (nonatomic, strong) UICollectionView *mainCollectionView;
 
+
+// collectionView size
+@property (nonatomic, assign) float collectionViewWidth;
+@property (nonatomic, assign) float collectionViewHeight;
 // 计算cell size
 @property (nonatomic, assign) int rowCellNum;
 @property (nonatomic, assign) float cellPaddingAll;
+@property (nonatomic, assign) float cellPaddingOne;
 @property (nonatomic, assign) float cellWidth;
 @property (nonatomic, assign) float cellHeight;
 @property (nonatomic, assign) CGSize cellSize;
@@ -46,15 +51,21 @@
     
     [self.view setBackgroundColor:[UIColor redColor]];
     
+    
+    // collectionView size
+    self.collectionViewWidth = kScreenWidth;
+    self.collectionViewHeight = kScreenHeight - kStatusBarHeight;
+    
     // 计算cell size
     self.rowCellNum = 7;
-    self.cellPaddingAll = kScreenWidth / 10;
-    self.cellWidth = (kScreenWidth - self.cellPaddingAll) / self.rowCellNum;
+    self.cellPaddingAll = self.collectionViewWidth / 10;
+    self.cellPaddingOne = self.cellPaddingAll / (self.rowCellNum  + 1);
+    self.cellWidth = (self.collectionViewWidth - self.cellPaddingAll) / self.rowCellNum;
     self.cellHeight = self.cellWidth;
     self.cellSize = CGSizeMake(self.cellWidth, self.cellHeight);
     
     // 计算一页的个数
-    self.onePageCellNum = (int)((kScreenHeight - kStatusBarHeight) / self.cellHeight) * self.rowCellNum;
+    self.onePageCellNum = (int)(self.collectionViewHeight / (self.cellHeight + self.cellPaddingOne)) * self.rowCellNum;
     
     
     UICollectionView *mainCollectionView;
@@ -147,7 +158,7 @@
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
 //    return 10;
-    return self.cellPaddingAll / (self.rowCellNum + 1);
+    return self.cellPaddingOne;
 }
 
 
@@ -156,7 +167,7 @@
 {
 //    return 15;
     
-    return self.cellPaddingAll / (self.rowCellNum + 1);
+    return self.cellPaddingOne;
 }
 
 
