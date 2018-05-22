@@ -26,6 +26,7 @@
 
 
 // collectionView size
+@property (nonatomic, assign) float collectionViewHorPadding;   // collectionView左右的Padding
 @property (nonatomic, assign) float collectionViewWidth;
 @property (nonatomic, assign) float collectionViewHeight;
 // 计算cell size
@@ -53,7 +54,8 @@
     
     
     // collectionView size
-    self.collectionViewWidth = kScreenWidth;
+    self.collectionViewHorPadding = kScreenWidth / 10;
+    self.collectionViewWidth = kScreenWidth - (self.collectionViewHorPadding * 2);
     self.collectionViewHeight = kScreenHeight - kStatusBarHeight;
     
     // 计算cell size
@@ -67,7 +69,7 @@
     // 计算一页的个数
     self.onePageCellNum = (int)(self.collectionViewHeight / (self.cellHeight + self.cellPaddingOne)) * self.rowCellNum;
     
-    
+    // UICollectionView会默认从系统状态栏下开始绘制
     UICollectionView *mainCollectionView;
     
     //1.初始化layout
@@ -80,7 +82,8 @@
 //    layout.itemSize =CGSizeMake(110, 150);
     
     //2.初始化collectionView
-    mainCollectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+    CGRect collectionViewRect = CGRectMake(self.collectionViewHorPadding, kStatusBarHeight, self.collectionViewWidth, self.collectionViewHeight);
+    mainCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewRect collectionViewLayout:layout];
     [self.view addSubview:mainCollectionView];
     mainCollectionView.backgroundColor = [UIColor greenColor];
     
