@@ -27,18 +27,21 @@
 
 // collectionView size
 @property (nonatomic, assign) float collectionViewHorPadding;   // collectionView左右的Padding
-@property (nonatomic, assign) float collectionViewWidth;
-@property (nonatomic, assign) float collectionViewHeight;
+@property (nonatomic, assign) float collectionViewWidth;        // collectionView的宽度
+@property (nonatomic, assign) float collectionViewHeight;       // collectionView的高度
 // 计算cell size
-@property (nonatomic, assign) int rowCellNum;
-@property (nonatomic, assign) float cellPaddingAll;
-@property (nonatomic, assign) float cellPaddingOne;
-@property (nonatomic, assign) float cellWidth;
-@property (nonatomic, assign) float cellHeight;
-@property (nonatomic, assign) CGSize cellSize;
+@property (nonatomic, assign) int rowCellNum;           // 每行显示几个
+@property (nonatomic, assign) float cellPaddingAll;     // 一行的总padding大小
+@property (nonatomic, assign) float cellPaddingOne;     // 一行内每一个padding的大小
+@property (nonatomic, assign) float cellWidth;          // 显示内容的item的宽
+@property (nonatomic, assign) float cellHeight;         // 显示内容的item的高
+@property (nonatomic, assign) CGSize cellSize;          // 显示内容的item的大小
 
-// 计算一页的个数
-@property (nonatomic, assign) int onePageCellNum;
+
+@property (nonatomic, assign) int onePageCellNum;       // 一个屏幕里能显示的item个数
+
+@property (nonatomic, assign) int oneIncreaseRowNum;    // 每次下拉到达要求时增加的行数
+@property (nonatomic, assign) int allIncreaseTimes;     // 增加行的总次数
 
 
 
@@ -56,7 +59,7 @@
     // collectionView size
     self.collectionViewHorPadding = kScreenWidth / 10;
     self.collectionViewWidth = kScreenWidth - (self.collectionViewHorPadding * 2);
-    self.collectionViewHeight = kScreenHeight - kStatusBarHeight;
+    self.collectionViewHeight = kScreenHeight - kStatusBarHeight - 50;
     
     // 计算cell size
     self.rowCellNum = 7;
@@ -67,7 +70,10 @@
     self.cellSize = CGSizeMake(self.cellWidth, self.cellHeight);
     
     // 计算一页的个数
-    self.onePageCellNum = (int)(self.collectionViewHeight / (self.cellHeight + self.cellPaddingOne)) * self.rowCellNum;
+    self.onePageCellNum = (int)((self.collectionViewHeight / (self.cellHeight + self.cellPaddingOne)) + 2) * self.rowCellNum;
+    
+    self.oneIncreaseRowNum = 5;
+    self.allIncreaseTimes = 1;
     
     // UICollectionView会默认从系统状态栏下开始绘制
     UICollectionView *mainCollectionView;
@@ -82,7 +88,7 @@
 //    layout.itemSize =CGSizeMake(110, 150);
     
     //2.初始化collectionView
-    CGRect collectionViewRect = CGRectMake(self.collectionViewHorPadding, kStatusBarHeight, self.collectionViewWidth, self.collectionViewHeight);
+    CGRect collectionViewRect = CGRectMake(self.collectionViewHorPadding, kScreenHeight - self.collectionViewHeight, self.collectionViewWidth, self.collectionViewHeight);
     mainCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewRect collectionViewLayout:layout];
     [self.view addSubview:mainCollectionView];
     mainCollectionView.backgroundColor = [UIColor greenColor];
@@ -117,7 +123,7 @@
 // 每个section的item个数
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    return self.onePageCellNum;
+    return self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -195,6 +201,16 @@
 }
 
 
+#pragma mark - UIScrollViewDelegate
+
+-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    NSLog(@"collectionview.contentOffset.y: %f", scrollView.contentOffset.y);
+    
+    
+    
+    
+}
 
 
 @end
