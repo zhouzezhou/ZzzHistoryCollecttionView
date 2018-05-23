@@ -37,7 +37,7 @@
 @property (nonatomic, assign) float cellHeight;         // 显示内容的item的高
 @property (nonatomic, assign) CGSize cellSize;          // 显示内容的item的大小
 
-
+@property (nonatomic, assign) int onePageRowNum;       // 一个屏幕里能显示的行数
 @property (nonatomic, assign) int onePageCellNum;       // 一个屏幕里能显示的item个数
 
 @property (nonatomic, assign) int oneIncreaseRowNum;    // 每次下拉到达要求时增加的行数
@@ -70,10 +70,11 @@
     self.cellSize = CGSizeMake(self.cellWidth, self.cellHeight);
     
     // 计算一页的个数
-    self.onePageCellNum = (int)((self.collectionViewHeight / (self.cellHeight + self.cellPaddingOne)) + 2) * self.rowCellNum;
+    self.onePageRowNum = (int)(self.collectionViewHeight / (self.cellHeight + self.cellPaddingOne));
+    self.onePageCellNum = (self.onePageRowNum + 2) * self.rowCellNum;
     
     self.oneIncreaseRowNum = 5;
-    self.allIncreaseTimes = 1;
+    self.allIncreaseTimes = 0;
     
     // UICollectionView会默认从系统状态栏下开始绘制
     UICollectionView *mainCollectionView;
@@ -128,6 +129,8 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSLog(@"indexPath is %@", indexPath);
+    
     
     UICollectionViewCell *cell = (UICollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
     
@@ -205,8 +208,13 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    NSLog(@"collectionview.contentOffset.y: %f", scrollView.contentOffset.y);
+//    NSLog(@"collectionview.contentOffset.y: %f", scrollView.contentOffset.y);
     
+    
+//    float increaseRowPointY = self.allIncreaseTimes * self.oneIncreaseRowNum * self.cellHeight;
+//    if(scrollView.contentOffset.y)
+//    
+//    self.allIncreaseTimes++;
     
     
     
