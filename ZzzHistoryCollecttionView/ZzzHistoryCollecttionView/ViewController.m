@@ -43,7 +43,7 @@
 @property (nonatomic, assign) int oneIncreaseRowNum;    // 每次下拉到达要求时增加的行数
 @property (nonatomic, assign) int allIncreaseTimes;     // 增加行的总次数
 
-
+@property (nonatomic, assign) int increaseRowSubNum;    // 加载倒数第几行的时候开始增加总行数
 
 @end
 
@@ -71,10 +71,11 @@
     
     // 计算一页的个数
     self.onePageRowNum = (int)(self.collectionViewHeight / (self.cellHeight + self.cellPaddingOne));
-    self.onePageCellNum = (self.onePageRowNum + 2) * self.rowCellNum;
+    self.onePageCellNum = (self.onePageRowNum + 0) * self.rowCellNum;
     
     self.oneIncreaseRowNum = 5;
-    self.allIncreaseTimes = 0;
+    self.allIncreaseTimes = 1;
+    self.increaseRowSubNum = 2;
     
     // UICollectionView会默认从系统状态栏下开始绘制
     UICollectionView *mainCollectionView;
@@ -124,13 +125,24 @@
 // 每个section的item个数
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    NSLog(@"%d", (self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum)) / self.rowCellNum);
     return self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum);
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"indexPath is %@", indexPath);
+//    NSLog(@"indexPath is %@", indexPath);
+//    NSLog(@"self.onePageRowNum:%d", self.onePageRowNum);
     
+    NSLog(@"正在加载多少行：%ld\n", (indexPath.row / self.rowCellNum) + 1);
+//    NSLog(@"当前总共可显示多少行：%d\n", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
+    if((indexPath.row / self.rowCellNum) + 1 >= (self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum) - self.increaseRowSubNum && indexPath.row <= 210)
+    {
+//        NSLog(@"refresh collectionview !");
+//        NSLog(@"当前总共可显示多少行：%d", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
+        self.allIncreaseTimes++;
+        [collectionView reloadData];
+    }
     
     UICollectionViewCell *cell = (UICollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
     
@@ -209,11 +221,14 @@
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
 //    NSLog(@"collectionview.contentOffset.y: %f", scrollView.contentOffset.y);
-    
-    
+//
+//
 //    float increaseRowPointY = self.allIncreaseTimes * self.oneIncreaseRowNum * self.cellHeight;
 //    if(scrollView.contentOffset.y)
-//    
+//    {
+//
+//    }
+    
 //    self.allIncreaseTimes++;
     
     
