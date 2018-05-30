@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "ZzzHistoryCollectionViewCell.h"
 
 // 屏幕的宽度
 #define kScreenWidth [[UIScreen mainScreen] bounds].size.width
@@ -71,7 +72,7 @@
     
     // 计算一页的个数
     self.onePageRowNum = (int)(self.collectionViewHeight / (self.cellHeight + self.cellPaddingOne));
-    self.onePageCellNum = (self.onePageRowNum + 0) * self.rowCellNum;
+    self.onePageCellNum = (self.onePageRowNum + 20) * self.rowCellNum;
     
     self.oneIncreaseRowNum = 5;
     self.allIncreaseTimes = 1;
@@ -97,7 +98,7 @@
     
     //3.注册collectionViewCell
     //注意，此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致 均为 cellId
-    [mainCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
+    [mainCollectionView registerClass:[ZzzHistoryCollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
     
     //注册headerView  此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致  均为reusableView
 //    [mainCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableView"];
@@ -115,7 +116,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark collectionView代理方法
+#pragma mark - collectionView代理方法
 // 返回section个数
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
@@ -134,21 +135,54 @@
 //    NSLog(@"indexPath is %@", indexPath);
 //    NSLog(@"self.onePageRowNum:%d", self.onePageRowNum);
     
-    NSLog(@"正在加载多少行：%ld\n", (indexPath.row / self.rowCellNum) + 1);
-//    NSLog(@"当前总共可显示多少行：%d\n", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
-    if((indexPath.row / self.rowCellNum) + 1 >= (self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum) - self.increaseRowSubNum && indexPath.row <= 210)
-    {
+//    NSLog(@"正在加载多少行：%ld\n", (indexPath.row / self.rowCellNum) + 1);
+////    NSLog(@"当前总共可显示多少行：%d\n", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
+//    if((indexPath.row / self.rowCellNum) + 1 >= (self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum) - self.increaseRowSubNum)
+//    {
 //        NSLog(@"refresh collectionview !");
-//        NSLog(@"当前总共可显示多少行：%d", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
-        self.allIncreaseTimes++;
-        [collectionView reloadData];
-    }
+////        NSLog(@"当前总共可显示多少行：%d", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
+////        if((indexPath.row + 1) <= 238)
+////        {
+//            self.allIncreaseTimes++;
+//            [collectionView reloadData];
+//
+////        }
+//    }
     
-    UICollectionViewCell *cell = (UICollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
+    ZzzHistoryCollectionViewCell *cell = (ZzzHistoryCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
+
+//    for (UIView *view in cell.contentView.subviews) {
+//        if (view) {
+//            [view removeFromSuperview];
+//        }
+//    }
+    
+//    if(!cell)
+//    {
+////        while ([cell.contentView.subviews lastObject] != nil)
+////        {
+////            [(UIView *)[cell.contentView.subviews lastObject] removeFromSuperview];
+////        }
+//        cell = [[UICollectionViewCell alloc] initWithFrame:CGRectMake(0, 0, self.cellWidth, self.cellHeight)];
+//
+//    }
     
 //    cell.botlabel.text = [NSString stringWithFormat:@"{%ld,%ld}",(long)indexPath.section,(long)indexPath.row];
     
+//    for (UIView *view in cell.contentView.subviews) {
+//        [view removeFromSuperview];
+//    }
+
+
     cell.backgroundColor = [UIColor yellowColor];
+    
+//    UILabel *rowNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.cellWidth, self.cellHeight)];
+//    [rowNumLabel setText:[NSString stringWithFormat:@"%ld", (indexPath.row / self.rowCellNum) + 1]];
+//    [rowNumLabel setTextAlignment:NSTextAlignmentCenter];
+//
+//    [cell addSubview:rowNumLabel];
+    
+    [cell.rowNumLabel setText:[NSString stringWithFormat:@"%ld", indexPath.row + 1]];
     
     return cell;
 }

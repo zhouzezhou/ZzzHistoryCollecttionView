@@ -24,6 +24,7 @@
 		5E7E0B8920AF28B20036FFF5 /* MASViewConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7E0B7E20AF28B20036FFF5 /* MASViewConstraint.m */; };
 		5E7E0B8A20AF28B20036FFF5 /* MASViewAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7E0B7F20AF28B20036FFF5 /* MASViewAttribute.m */; };
 		5E7E0B8B20AF28B20036FFF5 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E7E0B8020AF28B20036FFF5 /* Info.plist */; };
+		5E810C0020BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E810BFF20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +64,8 @@
 		5E7E0B7E20AF28B20036FFF5 /* MASViewConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewConstraint.m; sourceTree = "<group>"; };
 		5E7E0B7F20AF28B20036FFF5 /* MASViewAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewAttribute.m; sourceTree = "<group>"; };
 		5E7E0B8020AF28B20036FFF5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		5E810BFE20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZzzHistoryCollectionViewCell.h; sourceTree = "<group>"; };
+		5E810BFF20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZzzHistoryCollectionViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +100,8 @@
 			children = (
 				5E7E0B5220AF26FE0036FFF5 /* ViewController.h */,
 				5E7E0B5320AF26FE0036FFF5 /* ViewController.m */,
+				5E810BFE20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.h */,
+				5E810BFF20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.m */,
 				5E7E0B6520AF289D0036FFF5 /* Supporting Files */,
 				5E7E0B5820AF27000036FFF5 /* Assets.xcassets */,
 			);
@@ -233,6 +238,7 @@
 				5E7E0B8320AF28B20036FFF5 /* MASCompositeConstraint.m in Sources */,
 				5E7E0B8720AF28B20036FFF5 /* View+MASAdditions.m in Sources */,
 				5E7E0B8120AF28B20036FFF5 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
+				5E810C0020BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.m in Sources */,
 				5E7E0B8A20AF28B20036FFF5 /* MASViewAttribute.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
