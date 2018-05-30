@@ -70,9 +70,10 @@
     self.cellHeight = self.cellWidth;
     self.cellSize = CGSizeMake(self.cellWidth, self.cellHeight);
     
+    
     // 计算一页的个数
     self.onePageRowNum = (int)(self.collectionViewHeight / (self.cellHeight + self.cellPaddingOne));
-    self.onePageCellNum = (self.onePageRowNum + 20) * self.rowCellNum;
+    self.onePageCellNum = (self.onePageRowNum + 0) * self.rowCellNum;
     
     self.oneIncreaseRowNum = 5;
     self.allIncreaseTimes = 1;
@@ -135,19 +136,20 @@
 //    NSLog(@"indexPath is %@", indexPath);
 //    NSLog(@"self.onePageRowNum:%d", self.onePageRowNum);
     
-//    NSLog(@"正在加载多少行：%ld\n", (indexPath.row / self.rowCellNum) + 1);
-////    NSLog(@"当前总共可显示多少行：%d\n", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
-//    if((indexPath.row / self.rowCellNum) + 1 >= (self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum) - self.increaseRowSubNum)
-//    {
+//    NSLog(@"当前总共可显示多少行：%d\n", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
+    if((indexPath.row / self.rowCellNum) + 1 >= ((self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum) - self.increaseRowSubNum) && self.allIncreaseTimes < 10)
+    {
+        NSLog(@"正在加载多少行：%ld\n", (indexPath.row / self.rowCellNum) + 1);
 //        NSLog(@"refresh collectionview !");
-////        NSLog(@"当前总共可显示多少行：%d", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
-////        if((indexPath.row + 1) <= 238)
-////        {
-//            self.allIncreaseTimes++;
-//            [collectionView reloadData];
-//
-////        }
-//    }
+//        NSLog(@"当前总共可显示多少行：%d", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
+//        if((indexPath.row + 1) <= 238)
+//        {
+            self.allIncreaseTimes++;
+            NSLog(@"self.allIncreaseTimes is :%d", self.allIncreaseTimes);
+            [collectionView reloadData];
+
+//        }
+    }
     
     ZzzHistoryCollectionViewCell *cell = (ZzzHistoryCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
 
@@ -182,7 +184,7 @@
 //
 //    [cell addSubview:rowNumLabel];
     
-    [cell.rowNumLabel setText:[NSString stringWithFormat:@"%ld", indexPath.row + 1]];
+    [cell.rowNumLabel setText:[NSString stringWithFormat:@"%ld", (indexPath.row / self.rowCellNum) + 1]];
     
     return cell;
 }
