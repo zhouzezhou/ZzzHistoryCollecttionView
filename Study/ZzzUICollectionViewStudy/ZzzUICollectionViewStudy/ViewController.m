@@ -54,6 +54,13 @@
 {
     NSLog(@"now loading item row is :%ld", indexPath.row);
     
+//    if(indexPath.row == 1)
+//    {
+//        self.itemNum += 2;
+//        [collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:(self.itemNum - 2) inSection:0],
+//                                                  [NSIndexPath indexPathForItem:(self.itemNum - 1) inSection:0]]];
+//    }
+    
     ZzzHistoryCollectionViewCell *cell = (ZzzHistoryCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"historyCellID" forIndexPath:indexPath];
     
     [cell setBackgroundColor:[UIColor redColor]];
@@ -118,9 +125,9 @@
 //    self.itemNum--;
 //    [collectionView deleteItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:0 inSection:0]]];
     
-    self.itemNum += 2;
-    [collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:(self.itemNum - 2) inSection:0],
-                                              [NSIndexPath indexPathForItem:(self.itemNum - 1) inSection:0]]];
+//    self.itemNum += 2;
+//    [collectionView insertItemsAtIndexPaths:@[[NSIndexPath indexPathForItem:(self.itemNum - 1) inSection:0],
+//                                              [NSIndexPath indexPathForItem:(self.itemNum - 2) inSection:0]]];
 
 //    for(int i = 0; i < 100; i++)
 //    {
@@ -132,6 +139,15 @@
 //
 //    }
 
+    int increaseNum = 2;
+    self.itemNum += increaseNum;
+    NSMutableArray *increaseIndexPathArr = [NSMutableArray array];
+    for(int z = 0; z < increaseNum; z++)
+    {
+        NSIndexPath *tempIndexPath = [NSIndexPath indexPathForItem:(self.itemNum - 1 - z) inSection:0];
+        [increaseIndexPathArr addObject:tempIndexPath];
+    }
+    [collectionView insertItemsAtIndexPaths:increaseIndexPathArr];
 }
 
 @end

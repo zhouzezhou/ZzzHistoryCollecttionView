@@ -37,6 +37,7 @@
 @property (nonatomic, assign) float cellWidth;          // 显示内容的item的宽
 @property (nonatomic, assign) float cellHeight;         // 显示内容的item的高
 @property (nonatomic, assign) CGSize cellSize;          // 显示内容的item的大小
+@property (nonatomic, assign) NSInteger allItemCount;   // Item的数量
 
 @property (nonatomic, assign) int onePageRowNum;       // 一个屏幕里能显示的行数
 @property (nonatomic, assign) int onePageCellNum;       // 一个屏幕里能显示的item个数
@@ -78,6 +79,8 @@
     self.oneIncreaseRowNum = 5;
     self.allIncreaseTimes = 1;
     self.increaseRowSubNum = 2;
+    
+    self.allItemCount = self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum);
     
     // UICollectionView会默认从系统状态栏下开始绘制
     UICollectionView *mainCollectionView;
@@ -137,7 +140,7 @@
 //    NSLog(@"self.onePageRowNum:%d", self.onePageRowNum);
     
 //    NSLog(@"当前总共可显示多少行：%d\n", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
-    if((indexPath.row / self.rowCellNum) + 1 >= ((self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum) - self.increaseRowSubNum) && self.allIncreaseTimes < 10)
+    if((indexPath.row / self.rowCellNum) + 1 >= ((self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum) - self.increaseRowSubNum) && self.allIncreaseTimes < 100)
     {
         NSLog(@"正在加载多少行：%ld\n", (indexPath.row / self.rowCellNum) + 1);
 //        NSLog(@"refresh collectionview !");
@@ -146,7 +149,16 @@
 //        {
             self.allIncreaseTimes++;
             NSLog(@"self.allIncreaseTimes is :%d", self.allIncreaseTimes);
-            [collectionView reloadData];
+//            [collectionView reloadData];
+        
+        NSMutableArray *insertArray = [NSMutableArray array];
+        for(int i = 0; i < (self.oneIncreaseRowNum * self.rowCellNum); i++)
+        {
+            NSIndexPath *tempIndexPath = [NSIndexPath indexPathForItem:(self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum) - 1 - i) inSection:0];
+            
+            [insertArray addObject:tempIndexPath];
+        }
+        [collectionView insertItemsAtIndexPaths:insertArray];
 
 //        }
     }
