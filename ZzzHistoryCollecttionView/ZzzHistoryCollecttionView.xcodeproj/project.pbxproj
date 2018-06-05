@@ -23,7 +23,6 @@
 		5E7E0B8820AF28B20036FFF5 /* MASConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7E0B7C20AF28B20036FFF5 /* MASConstraint.m */; };
 		5E7E0B8920AF28B20036FFF5 /* MASViewConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7E0B7E20AF28B20036FFF5 /* MASViewConstraint.m */; };
 		5E7E0B8A20AF28B20036FFF5 /* MASViewAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7E0B7F20AF28B20036FFF5 /* MASViewAttribute.m */; };
-		5E7E0B8B20AF28B20036FFF5 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5E7E0B8020AF28B20036FFF5 /* Info.plist */; };
 		5E810C0020BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E810BFF20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.m */; };
 /* End PBXBuildFile section */
 
@@ -63,7 +62,6 @@
 		5E7E0B7D20AF28B20036FFF5 /* ViewController+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+MASAdditions.h"; sourceTree = "<group>"; };
 		5E7E0B7E20AF28B20036FFF5 /* MASViewConstraint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewConstraint.m; sourceTree = "<group>"; };
 		5E7E0B7F20AF28B20036FFF5 /* MASViewAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewAttribute.m; sourceTree = "<group>"; };
-		5E7E0B8020AF28B20036FFF5 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5E810BFE20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZzzHistoryCollectionViewCell.h; sourceTree = "<group>"; };
 		5E810BFF20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZzzHistoryCollectionViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -150,7 +148,6 @@
 				5E7E0B7D20AF28B20036FFF5 /* ViewController+MASAdditions.h */,
 				5E7E0B7E20AF28B20036FFF5 /* MASViewConstraint.m */,
 				5E7E0B7F20AF28B20036FFF5 /* MASViewAttribute.m */,
-				5E7E0B8020AF28B20036FFF5 /* Info.plist */,
 			);
 			path = Masonry;
 			sourceTree = "<group>";
@@ -212,7 +209,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5E7E0B8B20AF28B20036FFF5 /* Info.plist in Resources */,
 				5E7E0B5C20AF27000036FFF5 /* LaunchScreen.storyboard in Resources */,
 				5E7E0B5920AF27000036FFF5 /* Assets.xcassets in Resources */,
 				5E7E0B5720AF26FE0036FFF5 /* Main.storyboard in Resources */,
