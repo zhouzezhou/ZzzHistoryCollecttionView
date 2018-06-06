@@ -190,6 +190,17 @@
 //    return [dateFormatter stringFromDate:newdate];
 }
 
+// 判断某个日期是否为一个月的第一天，如果是则返回当前的月份，如果不是返回空字符串
+-(NSString *) isFirstDayForMonth:(NSDate *) date
+{
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *comps = [calendar components:NSCalendarUnitMonth|NSCalendarUnitDay fromDate:date];
+    if(comps.day == 1)
+    {
+        return [NSString stringWithFormat:@"%ld月", comps.month];
+    }
+    return @"";
+}
 
 #pragma mark - collectionView代理方法
 // 返回section个数
@@ -201,7 +212,7 @@
 // 每个section的item个数
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSLog(@"%d", (self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum)) / self.rowCellNum);
+    NSLog(@"当前collectionview总item数：%d", (self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum)) / self.rowCellNum);
     return self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum);
 }
 
@@ -235,13 +246,14 @@
     }
     
     ZzzHistoryCollectionViewCell *cell = (ZzzHistoryCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
+//    NSLog(@"cell :%@", cell);
     
-    //    for (UIView *view in cell.contentView.subviews) {
-    //        if (view) {
-    //            [view removeFromSuperview];
-    //        }
-    //    }
-    
+//    for (UIView *view in cell.contentView.subviews) {
+//        if (view) {
+//            [view removeFromSuperview];
+//        }
+//    }
+
     //    if(!cell)
     //    {
     ////        while ([cell.contentView.subviews lastObject] != nil)
@@ -277,7 +289,26 @@
     
     //    [cell.rowNumLabel setText:[NSString stringWithFormat:@"%ld", (indexPath.row / self.rowCellNum) + 1]];
     
-    [cell.rowNumLabel setText:[NSString stringWithFormat:@"%ld", indexPath.row]];
+    NSString *monthStr = [self isFirstDayForMonth:[self.date[indexPath.row] date]];
+    if(monthStr.length != 0)
+    {
+        [cell.rowNumLabel setText:[NSString stringWithFormat:@"%@", monthStr]];
+//        [cell.rowNumLabel setText:[NSString stringWithFormat:@"%@ %ld", monthStr, indexPath.row]];
+    }
+    else
+    {
+//        [cell.rowNumLabel setText:[NSString stringWithFormat:@"%ld", indexPath.row]];
+        
+        // 虽然这种情况下不显示任何rowNumLabel，但下一行代码不能注释掉，注释了之后setText之后的rowNumLabel会被重用到其它item上，导致不该出现内容的item上出现内容
+        [cell.rowNumLabel setText:@""];
+    }
+                          
+                          
+    
+    //    isFirstDayForMonth
+    
+    
+    
     
     return cell;
 }
