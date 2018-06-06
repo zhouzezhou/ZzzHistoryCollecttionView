@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) NSDate *start;    // 开始时间,YYYY-mm-dd HH:mm:ss:ms
 @property (nonatomic, strong) NSDate *end;      // 结束时间,YYYY-mm-dd HH:mm:ss:ms
 
-@property (nonatomic, strong) NSString *remark; // 备注
+@property (nonatomic, assign) NSInteger levelData; // 等级
 
 @end
 

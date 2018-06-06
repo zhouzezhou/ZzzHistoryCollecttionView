@@ -53,7 +53,7 @@
 // Data
 @property (nonatomic, assign) NSInteger selectedItemID; // 被选中的item的ID
 @property (nonatomic, strong) NSMutableArray *date;       // 数据源
-
+@property (nonatomic, strong) NSDate *dateCreateDate;    // 数据生成的时间，为了保证在一天的临界点数据分析正常，每次生成数据的时候使用一个时间而不是多次生成，更新整个数据源的时候才更新此值
 //    详情显示label
 @property (nonatomic, strong) UILabel *dateLabel;       // 日期标签
 
@@ -67,20 +67,24 @@
     [super viewDidLoad];
     
     
-    [self.view setBackgroundColor:[UIColor redColor]];
+    [self.view setBackgroundColor:[UIColor greenColor]];
     
     
     // collectionView size
     //    self.collectionViewHorPadding = kScreenWidth / 10;
     float descriptionViewHeight = 50;
     
-    self.collectionViewHorPadding = 0;
+    self.rowCellNum = 10;
+    self.collectionViewHorPadding = kScreenWidth / (10 * self.rowCellNum);
+    self.oneIncreaseRowNum = 2;
+    self.allIncreaseTimes = 1;
+    self.increaseRowSubNum = 2;
+    self.allIncreaseTimes_MAX = 1;        // 之后需要根据日期和其它信息动态计算
+    
     self.collectionViewWidth = kScreenWidth - (self.collectionViewHorPadding * 2);
     self.collectionViewHeight = kScreenHeight - kStatusBarHeight - descriptionViewHeight;
-    self.allIncreaseTimes_MAX = 100;        // 之后需要根据日期和其它信息动态计算
     
     // 计算cell size
-    self.rowCellNum = 10;
     self.cellPaddingAll = self.collectionViewWidth / 10;
     self.cellPaddingOne = self.cellPaddingAll / (self.rowCellNum  + 1);
     self.cellWidth = (self.collectionViewWidth - self.cellPaddingAll) / self.rowCellNum;
@@ -92,11 +96,8 @@
     self.onePageRowNum = (int)(self.collectionViewHeight / (self.cellHeight + self.cellPaddingOne));
     self.onePageCellNum = (self.onePageRowNum + 0) * self.rowCellNum;
     
-    self.oneIncreaseRowNum = 5;
-    self.allIncreaseTimes = 1;
-    self.increaseRowSubNum = 2;
     
-    self.allItemCount = self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum);
+//    self.allItemCount = self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum);
     
     
     [self configData];
@@ -130,9 +131,10 @@
     mainCollectionView.delegate = self;
     mainCollectionView.dataSource = self;
     
+    // 详细内容显示区
     UIView *descrpitionView = [[UIView alloc] initWithFrame:CGRectMake(0, kStatusBarHeight, kScreenWidth, descriptionViewHeight)];
     [self.view addSubview:descrpitionView];
-    [descrpitionView setBackgroundColor:[UIColor greenColor]];
+    [descrpitionView setBackgroundColor:[UIColor brownColor]];
     
     self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
     [self.dateLabel setText:@"日期"];
@@ -145,18 +147,64 @@
 
 -(void) configData
 {
+    self.dateCreateDate = [NSDate date];
+    
+    // 考虑数据量不会太大，所以一次全加载出来了
     NSUInteger maxColloectionItem = self.onePageCellNum + (self.allIncreaseTimes_MAX * self.oneIncreaseRowNum * self.rowCellNum);
     self.date = [NSMutableArray array];
     
     for(int i = 0; i < maxColloectionItem; i++)
     {
         DataZzzHistory *tempDataZzzHistory = [[DataZzzHistory alloc] init];
-        tempDataZzzHistory.date = [self formatDateByDayBeforeNow:i];
+        tempDataZzzHistory.date = [self formatDateByDayBeforeNow:i nowDate:self.dateCreateDate];
+        tempDataZzzHistory.levelData = 100;
         
         [self.date addObject:tempDataZzzHistory];
     }
 
     NSLog(@"Array count is :%ld", [self.date count]);
+    
+    // 模拟在特定的日期加上不同的内容,此数据应来自数据库
+    NSArray *dataLevelArray = [NSArray arrayWithObjects:
+                               [self formatDateByDayBeforeNow:0 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:4 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:7 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:8 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:12 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:14 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:20 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:27 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:33 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:37 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:40 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:41 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:43 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:44 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:45 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:60 nowDate:self.dateCreateDate],
+                               nil];
+
+    for(NSDate *temp in dataLevelArray)
+    {
+        NSDate *today = self.dateCreateDate;
+        
+        // 相差多少天
+        NSTimeInterval timeBetween = [today timeIntervalSinceDate:temp];
+        NSLog(@"timeBetween is :%f", timeBetween);
+        
+        NSUInteger lTimeBetween = (long)timeBetween;
+        
+        NSUInteger daysBetween = lTimeBetween / (3600 * 24);
+        NSLog(@"between days is :%lu", (unsigned long)daysBetween);
+        
+        // 不同的等级
+        int tempLevel = daysBetween % 5;
+        NSLog(@"tempLevel is :%d", tempLevel);
+        [self.date[daysBetween] setLevelData:tempLevel];
+    }
+    
+    
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -166,9 +214,9 @@
 
 #pragma mark - Private mothed
 
-- (NSDate *)formatDateByDayBeforeNow:(NSInteger) day
+- (NSDate *)formatDateByDayBeforeNow:(NSInteger) day nowDate:(NSDate *) now
 {
-    NSDate *now = [NSDate date];
+//    NSDate *now = [NSDate date];
     NSDate *newdate = now;
     
     if (day != 0) {
@@ -212,7 +260,7 @@
 // 每个section的item个数
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-    NSLog(@"当前collectionview总item数：%d", (self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum)) / self.rowCellNum);
+    NSLog(@"当前collectionview总行数：%d", (self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum)) / self.rowCellNum);
     return self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum);
 }
 
@@ -277,7 +325,28 @@
     }
     else
     {
-        cell.backgroundColor = [UIColor yellowColor];
+        switch ([self.date[indexPath.row] levelData]) {
+            case 0:
+                cell.backgroundColor = COLOR(0X00, 0XCC, 0XFF, 1);
+                break;
+            case 1:
+                cell.backgroundColor = COLOR(0X00, 0X99, 0XFF, 1);
+                break;
+            case 2:
+                cell.backgroundColor = COLOR(0X00, 0X66, 0XFF, 1);
+                break;
+            case 3:
+                cell.backgroundColor = COLOR(0X00, 0X33, 0XFF, 1);
+                break;
+            case 4:
+                cell.backgroundColor = [UIColor blueColor];
+                break;
+                
+            default:
+                cell.backgroundColor = [UIColor yellowColor];
+                break;
+        }
+        
     }
     
     
@@ -302,10 +371,6 @@
         // 虽然这种情况下不显示任何rowNumLabel，但下一行代码不能注释掉，注释了之后setText之后的rowNumLabel会被重用到其它item上，导致不该出现内容的item上出现内容
         [cell.rowNumLabel setText:@""];
     }
-                          
-                          
-    
-    //    isFirstDayForMonth
     
     
     
@@ -374,25 +439,33 @@
     //    NSString *msg = cell.botlabel.text;
     //    NSLog(@"%@",msg);
     
-    NSDateFormatter *df = [[NSDateFormatter alloc] init];
-    [df setDateFormat:@"yyyy'年'MM'月'dd'日"];
-    NSString *selectedItemDateStr = [df stringFromDate:[self.date[indexPath.row] date]];
-    
-    [self.dateLabel setText:[NSString stringWithFormat:@"Your selected item date is :%@", selectedItemDateStr]];
-    
-    // 更新collectionview对应的两个item
-    NSMutableArray *reloadArray = [NSMutableArray array];
-    NSIndexPath *oldIndexPath = [NSIndexPath indexPathForItem:self.selectedItemID inSection:0];
-    NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:indexPath.row inSection:0];
-    
-    [reloadArray addObject:oldIndexPath];
-    [reloadArray addObject:newIndexPath];
-    
-    
-    self.selectedItemID = indexPath.row;
-    
-    [collectionView reloadItemsAtIndexPaths:reloadArray];
-    
+    if(self.selectedItemID != indexPath.row)
+    {
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        [df setDateFormat:@"yyyy'年'MM'月'dd'日"];
+        NSString *selectedItemDateStr = [df stringFromDate:[self.date[indexPath.row] date]];
+        
+        [self.dateLabel setText:[NSString stringWithFormat:@"Your selected item date is :%@", selectedItemDateStr]];
+        
+        // 更新collectionview对应的两个item
+        NSMutableArray *reloadArray = [NSMutableArray array];
+        NSIndexPath *oldIndexPath = [NSIndexPath indexPathForItem:self.selectedItemID inSection:0];
+        NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:indexPath.row inSection:0];
+        
+        [reloadArray addObject:oldIndexPath];
+        [reloadArray addObject:newIndexPath];
+        
+        
+        self.selectedItemID = indexPath.row;
+        
+        [collectionView reloadItemsAtIndexPaths:reloadArray];
+    }
+    else
+    {
+        // 进入另一个界面之类的
+        // ...
+        
+    }
 }
 
 
