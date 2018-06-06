@@ -47,6 +47,13 @@
 
 @property (nonatomic, assign) int increaseRowSubNum;    // 加载倒数第几行的时候开始增加总行数
 
+// Data
+@property (nonatomic, assign) NSInteger selectedItemID; // 被选中的item的ID
+
+
+//    详情显示label
+@property (nonatomic, strong) UILabel *dateLabel;       // 日期标签
+
 @end
 
 @implementation ViewController
@@ -59,12 +66,15 @@
     
     
     // collectionView size
-    self.collectionViewHorPadding = kScreenWidth / 10;
+    //    self.collectionViewHorPadding = kScreenWidth / 10;
+    float descriptionViewHeight = 50;
+    
+    self.collectionViewHorPadding = 0;
     self.collectionViewWidth = kScreenWidth - (self.collectionViewHorPadding * 2);
-    self.collectionViewHeight = kScreenHeight - kStatusBarHeight - 50;
+    self.collectionViewHeight = kScreenHeight - kStatusBarHeight - descriptionViewHeight;
     
     // 计算cell size
-    self.rowCellNum = 7;
+    self.rowCellNum = 10;
     self.cellPaddingAll = self.collectionViewWidth / 10;
     self.cellPaddingOne = self.cellPaddingAll / (self.rowCellNum  + 1);
     self.cellWidth = (self.collectionViewWidth - self.cellPaddingAll) / self.rowCellNum;
@@ -90,9 +100,9 @@
     //设置collectionView滚动方向
     //    [layout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     //设置headerView的尺寸大小
-//    layout.headerReferenceSize = CGSizeMake(self.view.frame.size.width, 100);
-//    //该方法也可以设置itemSize
-//    layout.itemSize =CGSizeMake(110, 150);
+    //    layout.headerReferenceSize = CGSizeMake(self.view.frame.size.width, 100);
+    //    //该方法也可以设置itemSize
+    //    layout.itemSize =CGSizeMake(110, 150);
     
     //2.初始化collectionView
     CGRect collectionViewRect = CGRectMake(self.collectionViewHorPadding, kScreenHeight - self.collectionViewHeight, self.collectionViewWidth, self.collectionViewHeight);
@@ -105,11 +115,21 @@
     [mainCollectionView registerClass:[ZzzHistoryCollectionViewCell class] forCellWithReuseIdentifier:@"cellId"];
     
     //注册headerView  此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致  均为reusableView
-//    [mainCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableView"];
+    //    [mainCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableView"];
     
     //4.设置代理
     mainCollectionView.delegate = self;
     mainCollectionView.dataSource = self;
+    
+    UIView *descrpitionView = [[UIView alloc] initWithFrame:CGRectMake(0, kStatusBarHeight, kScreenWidth, descriptionViewHeight)];
+    [self.view addSubview:descrpitionView];
+    [descrpitionView setBackgroundColor:[UIColor greenColor]];
+    
+    self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
+    [self.dateLabel setText:@"日期"];
+    [descrpitionView addSubview:self.dateLabel];
+    [self.dateLabel setBackgroundColor:[UIColor orangeColor]];
+    
     
     
 }
@@ -136,20 +156,20 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    NSLog(@"indexPath is %@", indexPath);
-//    NSLog(@"self.onePageRowNum:%d", self.onePageRowNum);
+    NSLog(@"indexPath is %ld", indexPath.row);
+    //    NSLog(@"self.onePageRowNum:%d", self.onePageRowNum);
     
-//    NSLog(@"当前总共可显示多少行：%d\n", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
+    //    NSLog(@"当前总共可显示多少行：%d\n", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
     if((indexPath.row / self.rowCellNum) + 1 >= ((self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum) - self.increaseRowSubNum) && self.allIncreaseTimes < 100)
     {
         NSLog(@"正在加载多少行：%ld\n", (indexPath.row / self.rowCellNum) + 1);
-//        NSLog(@"refresh collectionview !");
-//        NSLog(@"当前总共可显示多少行：%d", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
-//        if((indexPath.row + 1) <= 238)
-//        {
-            self.allIncreaseTimes++;
-            NSLog(@"self.allIncreaseTimes is :%d", self.allIncreaseTimes);
-//            [collectionView reloadData];
+        //        NSLog(@"refresh collectionview !");
+        //        NSLog(@"当前总共可显示多少行：%d", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
+        //        if((indexPath.row + 1) <= 238)
+        //        {
+        self.allIncreaseTimes++;
+        NSLog(@"self.allIncreaseTimes is :%d", self.allIncreaseTimes);
+        //            [collectionView reloadData];
         
         NSMutableArray *insertArray = [NSMutableArray array];
         for(int i = 0; i < (self.oneIncreaseRowNum * self.rowCellNum); i++)
@@ -159,44 +179,54 @@
             [insertArray addObject:tempIndexPath];
         }
         [collectionView insertItemsAtIndexPaths:insertArray];
-
-//        }
+        
+        //        }
     }
     
     ZzzHistoryCollectionViewCell *cell = (ZzzHistoryCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"cellId" forIndexPath:indexPath];
-
-//    for (UIView *view in cell.contentView.subviews) {
-//        if (view) {
-//            [view removeFromSuperview];
-//        }
-//    }
     
-//    if(!cell)
-//    {
-////        while ([cell.contentView.subviews lastObject] != nil)
-////        {
-////            [(UIView *)[cell.contentView.subviews lastObject] removeFromSuperview];
-////        }
-//        cell = [[UICollectionViewCell alloc] initWithFrame:CGRectMake(0, 0, self.cellWidth, self.cellHeight)];
-//
-//    }
+    //    for (UIView *view in cell.contentView.subviews) {
+    //        if (view) {
+    //            [view removeFromSuperview];
+    //        }
+    //    }
     
-//    cell.botlabel.text = [NSString stringWithFormat:@"{%ld,%ld}",(long)indexPath.section,(long)indexPath.row];
+    //    if(!cell)
+    //    {
+    ////        while ([cell.contentView.subviews lastObject] != nil)
+    ////        {
+    ////            [(UIView *)[cell.contentView.subviews lastObject] removeFromSuperview];
+    ////        }
+    //        cell = [[UICollectionViewCell alloc] initWithFrame:CGRectMake(0, 0, self.cellWidth, self.cellHeight)];
+    //
+    //    }
     
-//    for (UIView *view in cell.contentView.subviews) {
-//        [view removeFromSuperview];
-//    }
-
-
-    cell.backgroundColor = [UIColor yellowColor];
+    //    cell.botlabel.text = [NSString stringWithFormat:@"{%ld,%ld}",(long)indexPath.section,(long)indexPath.row];
     
-//    UILabel *rowNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.cellWidth, self.cellHeight)];
-//    [rowNumLabel setText:[NSString stringWithFormat:@"%ld", (indexPath.row / self.rowCellNum) + 1]];
-//    [rowNumLabel setTextAlignment:NSTextAlignmentCenter];
-//
-//    [cell addSubview:rowNumLabel];
+    //    for (UIView *view in cell.contentView.subviews) {
+    //        [view removeFromSuperview];
+    //    }
     
-    [cell.rowNumLabel setText:[NSString stringWithFormat:@"%ld", (indexPath.row / self.rowCellNum) + 1]];
+    
+    if(self.selectedItemID == indexPath.row)
+    {
+        cell.backgroundColor = [UIColor purpleColor];
+    }
+    else
+    {
+        cell.backgroundColor = [UIColor yellowColor];
+    }
+    
+    
+    //    UILabel *rowNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.cellWidth, self.cellHeight)];
+    //    [rowNumLabel setText:[NSString stringWithFormat:@"%ld", (indexPath.row / self.rowCellNum) + 1]];
+    //    [rowNumLabel setTextAlignment:NSTextAlignmentCenter];
+    //
+    //    [cell addSubview:rowNumLabel];
+    
+    //    [cell.rowNumLabel setText:[NSString stringWithFormat:@"%ld", (indexPath.row / self.rowCellNum) + 1]];
+    
+    [cell.rowNumLabel setText:[NSString stringWithFormat:@"%ld", indexPath.row]];
     
     return cell;
 }
@@ -222,14 +252,14 @@
 //设置每个item的UIEdgeInsets
 - (UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-//    return UIEdgeInsetsMake(10, 10, 10, 10);
+    //    return UIEdgeInsetsMake(10, 10, 10, 10);
     return UIEdgeInsetsZero;
 }
 
 //设置每个item水平间距
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumInteritemSpacingForSectionAtIndex:(NSInteger)section
 {
-//    return 10;
+    //    return 10;
     return self.cellPaddingOne;
 }
 
@@ -237,7 +267,7 @@
 //设置每个item垂直间距
 - (CGFloat)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout minimumLineSpacingForSectionAtIndex:(NSInteger)section
 {
-//    return 15;
+    //    return 15;
     
     return self.cellPaddingOne;
 }
@@ -258,9 +288,25 @@
 //点击item方法
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    UICollectionViewCell *cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-//    NSString *msg = cell.botlabel.text;
-//    NSLog(@"%@",msg);
+    //    UICollectionViewCell *cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    //    NSString *msg = cell.botlabel.text;
+    //    NSLog(@"%@",msg);
+    
+    [self.dateLabel setText:[NSString stringWithFormat:@"Your selected item is :%ld", indexPath.row]];
+    
+    // 更新collectionview对应的两个item
+    NSMutableArray *reloadArray = [NSMutableArray array];
+    NSIndexPath *oldIndexPath = [NSIndexPath indexPathForItem:self.selectedItemID inSection:0];
+    NSIndexPath *newIndexPath = [NSIndexPath indexPathForItem:indexPath.row inSection:0];
+    
+    [reloadArray addObject:oldIndexPath];
+    [reloadArray addObject:newIndexPath];
+    
+    
+    self.selectedItemID = indexPath.row;
+    
+    [collectionView reloadItemsAtIndexPaths:reloadArray];
+    
 }
 
 
@@ -268,16 +314,16 @@
 
 -(void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-//    NSLog(@"collectionview.contentOffset.y: %f", scrollView.contentOffset.y);
-//
-//
-//    float increaseRowPointY = self.allIncreaseTimes * self.oneIncreaseRowNum * self.cellHeight;
-//    if(scrollView.contentOffset.y)
-//    {
-//
-//    }
+    //    NSLog(@"collectionview.contentOffset.y: %f", scrollView.contentOffset.y);
+    //
+    //
+    //    float increaseRowPointY = self.allIncreaseTimes * self.oneIncreaseRowNum * self.cellHeight;
+    //    if(scrollView.contentOffset.y)
+    //    {
+    //
+    //    }
     
-//    self.allIncreaseTimes++;
+    //    self.allIncreaseTimes++;
     
     
     
