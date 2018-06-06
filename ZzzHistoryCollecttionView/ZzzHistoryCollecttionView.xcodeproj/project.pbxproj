@@ -24,6 +24,7 @@
 		5E7E0B8920AF28B20036FFF5 /* MASViewConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7E0B7E20AF28B20036FFF5 /* MASViewConstraint.m */; };
 		5E7E0B8A20AF28B20036FFF5 /* MASViewAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E7E0B7F20AF28B20036FFF5 /* MASViewAttribute.m */; };
 		5E810C0020BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E810BFF20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.m */; };
+		5E99DAC120C7A53D007375A9 /* DataZzzHistory.m in Sources */ = {isa = PBXBuildFile; fileRef = 5E99DAC020C7A53D007375A9 /* DataZzzHistory.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,8 @@
 		5E7E0B7F20AF28B20036FFF5 /* MASViewAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewAttribute.m; sourceTree = "<group>"; };
 		5E810BFE20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZzzHistoryCollectionViewCell.h; sourceTree = "<group>"; };
 		5E810BFF20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZzzHistoryCollectionViewCell.m; sourceTree = "<group>"; };
+		5E99DABF20C7A53D007375A9 /* DataZzzHistory.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DataZzzHistory.h; sourceTree = "<group>"; };
+		5E99DAC020C7A53D007375A9 /* DataZzzHistory.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DataZzzHistory.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +103,8 @@
 				5E7E0B5320AF26FE0036FFF5 /* ViewController.m */,
 				5E810BFE20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.h */,
 				5E810BFF20BECF3400ADC9E6 /* ZzzHistoryCollectionViewCell.m */,
+				5E99DABF20C7A53D007375A9 /* DataZzzHistory.h */,
+				5E99DAC020C7A53D007375A9 /* DataZzzHistory.m */,
 				5E7E0B6520AF289D0036FFF5 /* Supporting Files */,
 				5E7E0B5820AF27000036FFF5 /* Assets.xcassets */,
 			);
@@ -225,6 +230,7 @@
 				5E7E0B8420AF28B20036FFF5 /* MASConstraintMaker.m in Sources */,
 				5E7E0B5420AF26FE0036FFF5 /* ViewController.m in Sources */,
 				5E7E0B8220AF28B20036FFF5 /* ViewController+MASAdditions.m in Sources */,
+				5E99DAC120C7A53D007375A9 /* DataZzzHistory.m in Sources */,
 				5E7E0B8920AF28B20036FFF5 /* MASViewConstraint.m in Sources */,
 				5E7E0B5F20AF27000036FFF5 /* main.m in Sources */,
 				5E7E0B8520AF28B20036FFF5 /* MASLayoutConstraint.m in Sources */,

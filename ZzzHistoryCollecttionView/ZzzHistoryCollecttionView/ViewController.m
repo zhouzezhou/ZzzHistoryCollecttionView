@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "ZzzHistoryCollectionViewCell.h"
+#import "DataZzzHistory.h"
 
 // 屏幕的宽度
 #define kScreenWidth [[UIScreen mainScreen] bounds].size.width
@@ -43,16 +44,20 @@
 @property (nonatomic, assign) int onePageCellNum;       // 一个屏幕里能显示的item个数
 
 @property (nonatomic, assign) int oneIncreaseRowNum;    // 每次下拉到达要求时增加的行数
-@property (nonatomic, assign) int allIncreaseTimes;     // 增加行的总次数
+@property (nonatomic, assign) int allIncreaseTimes;     // 增加（多）行的总次数
+
+@property (nonatomic, assign) int allIncreaseTimes_MAX; // 增加（多）行的总次数的最大值
 
 @property (nonatomic, assign) int increaseRowSubNum;    // 加载倒数第几行的时候开始增加总行数
 
 // Data
 @property (nonatomic, assign) NSInteger selectedItemID; // 被选中的item的ID
-
+@property (nonatomic, strong) NSMutableArray *date;       // 数据源
 
 //    详情显示label
 @property (nonatomic, strong) UILabel *dateLabel;       // 日期标签
+
+
 
 @end
 
@@ -72,6 +77,7 @@
     self.collectionViewHorPadding = 0;
     self.collectionViewWidth = kScreenWidth - (self.collectionViewHorPadding * 2);
     self.collectionViewHeight = kScreenHeight - kStatusBarHeight - descriptionViewHeight;
+    self.allIncreaseTimes_MAX = 100;        // 之后需要根据日期和其它信息动态计算
     
     // 计算cell size
     self.rowCellNum = 10;
@@ -91,6 +97,9 @@
     self.increaseRowSubNum = 2;
     
     self.allItemCount = self.onePageCellNum + (self.allIncreaseTimes * self.oneIncreaseRowNum * self.rowCellNum);
+    
+    
+    [self configData];
     
     // UICollectionView会默认从系统状态栏下开始绘制
     UICollectionView *mainCollectionView;
@@ -134,11 +143,53 @@
     
 }
 
+-(void) configData
+{
+    NSUInteger maxColloectionItem = self.onePageCellNum + (self.allIncreaseTimes_MAX * self.oneIncreaseRowNum * self.rowCellNum);
+    self.date = [NSMutableArray array];
+    
+    for(int i = 0; i < maxColloectionItem; i++)
+    {
+        DataZzzHistory *tempDataZzzHistory = [[DataZzzHistory alloc] init];
+        tempDataZzzHistory.date = [self formatDateByDayBeforeNow:i];
+        
+        [self.date addObject:tempDataZzzHistory];
+    }
+
+    NSLog(@"Array count is :%ld", [self.date count]);
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - Private mothed
+
+- (NSDate *)formatDateByDayBeforeNow:(NSInteger) day
+{
+    NSDate *now = [NSDate date];
+    NSDate *newdate = now;
+    
+    if (day != 0) {
+        NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+        NSDateComponents *comps = [calendar components:NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay fromDate:now];
+        comps.day -= day;
+        newdate = [calendar dateFromComponents:comps];
+    }
+    
+    return newdate;
+    
+//    //实例化一个NSDateFormatter对象
+//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+//
+//    //设定时间格式,这里可以设置成自己需要的格式
+//    [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd'"];
+//
+//    //用[NSDate date]可以获取系统当前时间
+//    return [dateFormatter stringFromDate:newdate];
+}
+
 
 #pragma mark - collectionView代理方法
 // 返回section个数
@@ -156,11 +207,11 @@
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"indexPath is %ld", indexPath.row);
+//    NSLog(@"indexPath is %ld", indexPath.row);
     //    NSLog(@"self.onePageRowNum:%d", self.onePageRowNum);
     
     //    NSLog(@"当前总共可显示多少行：%d\n", self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum);
-    if((indexPath.row / self.rowCellNum) + 1 >= ((self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum) - self.increaseRowSubNum) && self.allIncreaseTimes < 100)
+    if((indexPath.row / self.rowCellNum) + 1 >= ((self.onePageRowNum + self.allIncreaseTimes * self.oneIncreaseRowNum) - self.increaseRowSubNum) && self.allIncreaseTimes < self.allIncreaseTimes_MAX)
     {
         NSLog(@"正在加载多少行：%ld\n", (indexPath.row / self.rowCellNum) + 1);
         //        NSLog(@"refresh collectionview !");
@@ -292,7 +343,11 @@
     //    NSString *msg = cell.botlabel.text;
     //    NSLog(@"%@",msg);
     
-    [self.dateLabel setText:[NSString stringWithFormat:@"Your selected item is :%ld", indexPath.row]];
+    NSDateFormatter *df = [[NSDateFormatter alloc] init];
+    [df setDateFormat:@"yyyy'年'MM'月'dd'日"];
+    NSString *selectedItemDateStr = [df stringFromDate:[self.date[indexPath.row] date]];
+    
+    [self.dateLabel setText:[NSString stringWithFormat:@"Your selected item date is :%@", selectedItemDateStr]];
     
     // 更新collectionview对应的两个item
     NSMutableArray *reloadArray = [NSMutableArray array];
