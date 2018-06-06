@@ -157,7 +157,7 @@
     {
         DataZzzHistory *tempDataZzzHistory = [[DataZzzHistory alloc] init];
         tempDataZzzHistory.date = [self formatDateByDayBeforeNow:i nowDate:self.dateCreateDate];
-        tempDataZzzHistory.levelData = 100;
+        tempDataZzzHistory.levelData = 0;
         
         [self.date addObject:tempDataZzzHistory];
     }
@@ -168,6 +168,7 @@
     NSArray *dataLevelArray = [NSArray arrayWithObjects:
                                [self formatDateByDayBeforeNow:0 nowDate:self.dateCreateDate],
                                [self formatDateByDayBeforeNow:4 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:5 nowDate:self.dateCreateDate],
                                [self formatDateByDayBeforeNow:7 nowDate:self.dateCreateDate],
                                [self formatDateByDayBeforeNow:8 nowDate:self.dateCreateDate],
                                [self formatDateByDayBeforeNow:12 nowDate:self.dateCreateDate],
@@ -198,7 +199,7 @@
         NSLog(@"between days is :%lu", (unsigned long)daysBetween);
         
         // 不同的等级
-        int tempLevel = daysBetween % 5;
+        int tempLevel = (daysBetween % 5) + 1;
         NSLog(@"tempLevel is :%d", tempLevel);
         [self.date[daysBetween] setLevelData:tempLevel];
     }
@@ -327,18 +328,21 @@
     {
         switch ([self.date[indexPath.row] levelData]) {
             case 0:
-                cell.backgroundColor = COLOR(0X00, 0XCC, 0XFF, 1);
+                cell.backgroundColor = [UIColor yellowColor];
                 break;
             case 1:
-                cell.backgroundColor = COLOR(0X00, 0X99, 0XFF, 1);
+                cell.backgroundColor = COLOR(0X00, 0XCC, 0XFF, 1);
                 break;
             case 2:
-                cell.backgroundColor = COLOR(0X00, 0X66, 0XFF, 1);
+                cell.backgroundColor = COLOR(0X00, 0X99, 0XFF, 1);
                 break;
             case 3:
-                cell.backgroundColor = COLOR(0X00, 0X33, 0XFF, 1);
+                cell.backgroundColor = COLOR(0X00, 0X66, 0XFF, 1);
                 break;
             case 4:
+                cell.backgroundColor = COLOR(0X00, 0X33, 0XFF, 1);
+                break;
+            case 5:
                 cell.backgroundColor = [UIColor blueColor];
                 break;
                 
@@ -445,7 +449,7 @@
         [df setDateFormat:@"yyyy'年'MM'月'dd'日"];
         NSString *selectedItemDateStr = [df stringFromDate:[self.date[indexPath.row] date]];
         
-        [self.dateLabel setText:[NSString stringWithFormat:@"Your selected item date is :%@", selectedItemDateStr]];
+        [self.dateLabel setText:[NSString stringWithFormat:@"Your selected item date is :%@ level %ld", selectedItemDateStr, (long)[self.date[indexPath.row] levelData]]];
         
         // 更新collectionview对应的两个item
         NSMutableArray *reloadArray = [NSMutableArray array];
