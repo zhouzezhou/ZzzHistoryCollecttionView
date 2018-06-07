@@ -15,7 +15,7 @@
     self = [super initWithFrame:frame];
     
     
-    self.rowNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 50, 50)];
+    self.rowNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
     
     [self.rowNumLabel setTextAlignment:NSTextAlignmentCenter];
     [self.rowNumLabel setFont:[UIFont systemFontOfSize:12]];

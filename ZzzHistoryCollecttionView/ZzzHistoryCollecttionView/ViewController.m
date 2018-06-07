@@ -74,7 +74,7 @@
     //    self.collectionViewHorPadding = kScreenWidth / 10;
     float descriptionViewHeight = 50;
     
-    self.rowCellNum = 10;
+    self.rowCellNum = 12;
     self.collectionViewHorPadding = kScreenWidth / (10 * self.rowCellNum);
     self.oneIncreaseRowNum = 2;
     self.allIncreaseTimes = 1;
@@ -141,7 +141,8 @@
     [descrpitionView addSubview:self.dateLabel];
     [self.dateLabel setBackgroundColor:[UIColor orangeColor]];
     
-    
+    // 选中第一个
+//    [mainCollectionView selectItemAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0] animated:NO scrollPosition:UICollectionViewScrollPositionTop];
     
 }
 
@@ -323,6 +324,12 @@
     if(self.selectedItemID == indexPath.row)
     {
         cell.backgroundColor = [UIColor purpleColor];
+        
+        NSDateFormatter *df = [[NSDateFormatter alloc] init];
+        [df setDateFormat:@"yyyy'年'MM'月'dd'日"];
+        NSString *selectedItemDateStr = [df stringFromDate:[self.date[indexPath.row] date]];
+        
+        [self.dateLabel setText:[NSString stringWithFormat:@"  %@ level %ld", selectedItemDateStr, (long)[self.date[indexPath.row] levelData]]];
     }
     else
     {
@@ -445,11 +452,6 @@
     
     if(self.selectedItemID != indexPath.row)
     {
-        NSDateFormatter *df = [[NSDateFormatter alloc] init];
-        [df setDateFormat:@"yyyy'年'MM'月'dd'日"];
-        NSString *selectedItemDateStr = [df stringFromDate:[self.date[indexPath.row] date]];
-        
-        [self.dateLabel setText:[NSString stringWithFormat:@"Your selected item date is :%@ level %ld", selectedItemDateStr, (long)[self.date[indexPath.row] levelData]]];
         
         // 更新collectionview对应的两个item
         NSMutableArray *reloadArray = [NSMutableArray array];
