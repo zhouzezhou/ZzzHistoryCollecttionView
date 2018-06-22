@@ -38,7 +38,6 @@
 @property (nonatomic, assign) float cellWidth;          // 显示内容的item的宽
 @property (nonatomic, assign) float cellHeight;         // 显示内容的item的高
 @property (nonatomic, assign) CGSize cellSize;          // 显示内容的item的大小
-@property (nonatomic, assign) NSInteger allItemCount;   // Item的数量
 
 @property (nonatomic, assign) int onePageRowNum;       // 一个屏幕里能显示的行数
 @property (nonatomic, assign) int onePageCellNum;      // 一个屏幕里能显示的item个数
@@ -72,7 +71,6 @@
     
     // 配置CollectionView参数
     // collectionView size
-    //    self.collectionViewHorPadding = kScreenWidth / 10;
     float descriptionViewHeight = 150;
     
     self.rowCellNum = 12;
@@ -157,11 +155,8 @@
     self.dateCreateDate = [NSDate date];
     
     // 最早一次记录距今天多少天
-        int allItemNum = 1;
-    //        int allItemNum = 190;  // < onePageCellNum
-    //        int allItemNum = 193;  // onePageCellNum + 1
-    //        int allItemNum = 790;  // 20行之后 - 2item
-//    int allItemNum = 793;  // 20行之后 + 1item
+//    int allItemNum = 1;
+    int allItemNum = 277;
     
     // 比一页显示的数量都少，则最多显示当前页
     if(allItemNum <= self.onePageCellNum)
@@ -170,17 +165,15 @@
     }
     else
     {
-//        int maxIncreaseTimes = ((allItemNum - (self.onePageCellNum + (self.allIncreaseTimes * self.onePageSubRow * self.rowCellNum))) / self.rowCellNum ) / self.onePageSubRow + 1;
-//        self.increaseRowNumMax = self.allIncreaseTimes + maxIncreaseTimes;
-        float fMax = (allItemNum - self.onePageCellNum) / self.rowCellNum;
+        float fMax = ((float)allItemNum - (float)self.onePageCellNum) / (float)self.rowCellNum;
         // 判断fMax是否为小数
         if(fMax != (int)fMax)
         {
-            self.increaseRowNumMax = fMax;
+            self.increaseRowNumMax = fMax + 1;
         }
         else
         {
-            self.increaseRowNumMax = fMax + 1;
+            self.increaseRowNumMax = fMax;
         }
     }
     NSLog(@"increaseRowNumMax is :%d", self.increaseRowNumMax);
@@ -220,6 +213,7 @@
                                [self formatDateByDayBeforeNow:44 nowDate:self.dateCreateDate],
                                [self formatDateByDayBeforeNow:45 nowDate:self.dateCreateDate],
                                [self formatDateByDayBeforeNow:60 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:275 nowDate:self.dateCreateDate],
                                [self formatDateByDayBeforeNow:700 nowDate:self.dateCreateDate],
                                nil];
 
@@ -256,11 +250,6 @@
     self.dateCreateDate = [NSDate date];
     
     // 最早一次记录距今天多少天
-//    int allItemNum = 1;
-    //        int allItemNum = 190;  // < onePageCellNum
-    //        int allItemNum = 193;  // onePageCellNum + 1
-    //        int allItemNum = 790;  // 20行之后 - 2item
-    //    int allItemNum = 793;  // 20行之后 + 1item
     int allItemNum = 365 * 20;
     
     // 比一页显示的数量都少，则最多显示当前页
@@ -270,17 +259,15 @@
     }
     else
     {
-        //        int maxIncreaseTimes = ((allItemNum - (self.onePageCellNum + (self.allIncreaseTimes * self.onePageSubRow * self.rowCellNum))) / self.rowCellNum ) / self.onePageSubRow + 1;
-        //        self.increaseRowNumMax = self.allIncreaseTimes + maxIncreaseTimes;
-        float fMax = (allItemNum - self.onePageCellNum) / self.rowCellNum;
+        float fMax = ((float)allItemNum - (float)self.onePageCellNum) / (float)self.rowCellNum;
         // 判断fMax是否为小数
         if(fMax != (int)fMax)
         {
-            self.increaseRowNumMax = fMax;
+            self.increaseRowNumMax = fMax + 1;
         }
         else
         {
-            self.increaseRowNumMax = fMax + 1;
+            self.increaseRowNumMax = fMax;
         }
     }
     NSLog(@"increaseRowNumMax is :%d", self.increaseRowNumMax);
@@ -320,6 +307,7 @@
                                [self formatDateByDayBeforeNow:44 nowDate:self.dateCreateDate],
                                [self formatDateByDayBeforeNow:45 nowDate:self.dateCreateDate],
                                [self formatDateByDayBeforeNow:60 nowDate:self.dateCreateDate],
+                               [self formatDateByDayBeforeNow:275 nowDate:self.dateCreateDate],
                                [self formatDateByDayBeforeNow:700 nowDate:self.dateCreateDate],
                                [self formatDateByDayBeforeNow:2000 nowDate:self.dateCreateDate],
                                nil];
@@ -350,7 +338,6 @@
 
 - (NSDate *)formatDateByDayBeforeNow:(NSInteger) day nowDate:(NSDate *) now
 {
-//    NSDate *now = [NSDate date];
     NSDate *newdate = now;
     
     if (day != 0) {
@@ -361,15 +348,6 @@
     }
     
     return newdate;
-    
-//    //实例化一个NSDateFormatter对象
-//    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-//
-//    //设定时间格式,这里可以设置成自己需要的格式
-//    [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd'"];
-//
-//    //用[NSDate date]可以获取系统当前时间
-//    return [dateFormatter stringFromDate:newdate];
 }
 
 // 判断某个日期是否为一个月的第一天，如果是则返回当前的月份，如果不是返回空字符串
@@ -394,69 +372,12 @@
 // 每个section的item个数
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
-//    NSLog(@"当前collectionview总行数：%d", (self.onePageCellNum + (self.allIncreaseTimes * self.onePageSubRow * self.rowCellNum)) / self.rowCellNum);
-//    return self.onePageCellNum + (self.allIncreaseTimes * self.onePageSubRow * self.rowCellNum);
     return [self.dataHistoryArray count];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-//    NSLog(@"indexPath is %ld", indexPath.row);
-    //    NSLog(@"self.onePageRowNum:%d", self.onePageRowNum);
-    
-    //    NSLog(@"当前总共可显示多少行：%d\n", self.onePageRowNum + self.allIncreaseTimes * self.onePageSubRow);
-//    if((indexPath.row / self.rowCellNum) + 1 >= ((self.onePageRowNum + self.allIncreaseTimes * self.onePageSubRow) - self.increaseRowSubNum) && self.allIncreaseTimes < self.increaseRowNumMax)
-//    {
-//        NSLog(@"正在加载多少行：%ld\n", (indexPath.row / self.rowCellNum) + 1);
-//        //        NSLog(@"refresh collectionview !");
-//        //        NSLog(@"当前总共可显示多少行：%d", self.onePageRowNum + self.allIncreaseTimes * self.onePageSubRow);
-//        //        if((indexPath.row + 1) <= 238)
-//        //        {
-//        self.allIncreaseTimes++;
-//        NSLog(@"self.allIncreaseTimes is :%d", self.allIncreaseTimes);
-//        //            [collectionView reloadData];
-//
-//        // 增加数据源
-//
-//
-//        // 刷新界面
-//        NSMutableArray *insertArray = [NSMutableArray array];
-//        for(int i = 0; i < (self.onePageSubRow * self.rowCellNum); i++)
-//        {
-//            NSIndexPath *tempIndexPath = [NSIndexPath indexPathForItem:(self.onePageCellNum + (self.allIncreaseTimes * self.onePageSubRow * self.rowCellNum) - 1 - i) inSection:0];
-//
-//            [insertArray addObject:tempIndexPath];
-//        }
-//        [collectionView insertItemsAtIndexPaths:insertArray];
-//
-//        //        }
-//    }
-    
     ZzzHistoryCollectionViewCell *cell = (ZzzHistoryCollectionViewCell *)[collectionView dequeueReusableCellWithReuseIdentifier:@"ZzzHistoryCollectionViewCellId" forIndexPath:indexPath];
-//    NSLog(@"cell :%@", cell);
-    
-//    for (UIView *view in cell.contentView.subviews) {
-//        if (view) {
-//            [view removeFromSuperview];
-//        }
-//    }
-
-    //    if(!cell)
-    //    {
-    ////        while ([cell.contentView.subviews lastObject] != nil)
-    ////        {
-    ////            [(UIView *)[cell.contentView.subviews lastObject] removeFromSuperview];
-    ////        }
-    //        cell = [[UICollectionViewCell alloc] initWithFrame:CGRectMake(0, 0, self.cellWidth, self.cellHeight)];
-    //
-    //    }
-    
-    //    cell.botlabel.text = [NSString stringWithFormat:@"{%ld,%ld}",(long)indexPath.section,(long)indexPath.row];
-    
-    //    for (UIView *view in cell.contentView.subviews) {
-    //        [view removeFromSuperview];
-    //    }
-    
     
     if(self.selectedItemID == indexPath.row)
     {
@@ -496,15 +417,6 @@
         }
         
     }
-    
-    
-    //    UILabel *rowNumLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, self.cellWidth, self.cellHeight)];
-    //    [rowNumLabel setText:[NSString stringWithFormat:@"%ld", (indexPath.row / self.rowCellNum) + 1]];
-    //    [rowNumLabel setTextAlignment:NSTextAlignmentCenter];
-    //
-    //    [cell addSubview:rowNumLabel];
-    
-    //    [cell.rowNumLabel setText:[NSString stringWithFormat:@"%ld", (indexPath.row / self.rowCellNum) + 1]];
     
     NSString *monthStr = [self isFirstDayForMonth:[self.dataHistoryArray[indexPath.row] date]];
     if(monthStr.length != 0)
@@ -585,10 +497,6 @@
 //点击item方法
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    //    UICollectionViewCell *cell = (UICollectionViewCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    //    NSString *msg = cell.botlabel.text;
-    //    NSLog(@"%@",msg);
-    
     if(self.selectedItemID != indexPath.row)
     {
         
@@ -612,27 +520,6 @@
         
     }
 }
-
-
-#pragma mark - UIScrollViewDelegate
-
--(void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    //    NSLog(@"collectionview.contentOffset.y: %f", scrollView.contentOffset.y);
-    //
-    //
-    //    float increaseRowPointY = self.allIncreaseTimes * self.onePageSubRow * self.cellHeight;
-    //    if(scrollView.contentOffset.y)
-    //    {
-    //
-    //    }
-    
-    //    self.allIncreaseTimes++;
-    
-    
-    
-}
-
 
 @end
 
