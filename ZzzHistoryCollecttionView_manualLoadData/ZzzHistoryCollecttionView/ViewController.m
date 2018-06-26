@@ -64,7 +64,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.view setBackgroundColor:[UIColor greenColor]];
+    [self.view setBackgroundColor:[UIColor whiteColor]];
     
     // 初始化数据
     self.dataHistoryArray = [NSMutableArray array];
@@ -99,7 +99,7 @@
     CGRect collectionViewRect = CGRectMake(self.collectionViewHorPadding, kScreenHeight - self.collectionViewHeight, self.collectionViewWidth, self.collectionViewHeight);
     self.historyCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewRect collectionViewLayout:layout];
     [self.view addSubview:self.historyCollectionView];
-    self.historyCollectionView.backgroundColor = [UIColor greenColor];
+    self.historyCollectionView.backgroundColor = [UIColor whiteColor];
     
     //3.注册collectionViewCell
     //注意，此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致 均为 cellId
@@ -116,25 +116,29 @@
     //  顶部的详细内容显示区
     UIView *descrpitionView = [[UIView alloc] initWithFrame:CGRectMake(0, kStatusBarHeight, kScreenWidth, descriptionViewHeight)];
     [self.view addSubview:descrpitionView];
-    [descrpitionView setBackgroundColor:[UIColor brownColor]];
+    [descrpitionView setBackgroundColor:[UIColor whiteColor]];
     
     self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
     [self.dateLabel setText:@"日期"];
     [descrpitionView addSubview:self.dateLabel];
-    [self.dateLabel setBackgroundColor:[UIColor orangeColor]];
+    [self.dateLabel setBackgroundColor:[UIColor whiteColor]];
+    [self.dateLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
+    [self.dateLabel setTextAlignment:NSTextAlignmentCenter];
     
     self.testBtn1 = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.testBtn1 setFrame:CGRectMake(0, 50, kScreenWidth, 30)];
-    [self.testBtn1 setTitle:@"Test Btn1" forState:UIControlStateNormal];
-    [self.testBtn1 setBackgroundColor:[UIColor grayColor]];
+    [self.testBtn1 setFrame:CGRectMake(20, 50, kScreenWidth - 40, 30)];
+    [self.testBtn1 setTitle:@"开始加载 少量 数据并显示" forState:UIControlStateNormal];
+    [self.testBtn1 setBackgroundColor:[UIColor redColor]];
+    self.testBtn1.layer.cornerRadius = 4.f;
     [self.testBtn1 addTarget:self action:@selector(testBtnClick) forControlEvents:UIControlEventTouchUpInside];
     [descrpitionView addSubview:self.testBtn1];
     
     
     self.testBtn2 = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.testBtn2 setFrame:CGRectMake(0, 100, kScreenWidth, 30)];
-    [self.testBtn2 setTitle:@"Test Btn2" forState:UIControlStateNormal];
-    [self.testBtn2 setBackgroundColor:[UIColor grayColor]];
+    [self.testBtn2 setFrame:CGRectMake(20, 100, kScreenWidth - 40, 30)];
+    [self.testBtn2 setTitle:@"开始加载 大量 数据并显示" forState:UIControlStateNormal];
+    [self.testBtn2 setBackgroundColor:[UIColor redColor]];
+    self.testBtn2.layer.cornerRadius = 4.f;
     [self.testBtn2 addTarget:self action:@selector(testBtn2Click) forControlEvents:UIControlEventTouchUpInside];
     [descrpitionView addSubview:self.testBtn2];
     
@@ -381,7 +385,7 @@
     
     if(self.selectedItemID == indexPath.row)
     {
-        cell.backgroundColor = [UIColor purpleColor];
+        cell.backgroundColor = [UIColor redColor];
         
         NSDateFormatter *df = [[NSDateFormatter alloc] init];
         [df setDateFormat:@"yyyy'年'MM'月'dd'日"];
@@ -393,7 +397,7 @@
     {
         switch ([self.dataHistoryArray[indexPath.row] levelData]) {
             case 0:
-                cell.backgroundColor = [UIColor yellowColor];
+                cell.backgroundColor = COLOR(0xE7,0xE8,0xED,1.f);
                 break;
             case 1:
                 cell.backgroundColor = COLOR(0X00, 0XCC, 0XFF, 1);
@@ -412,7 +416,7 @@
                 break;
                 
             default:
-                cell.backgroundColor = [UIColor yellowColor];
+                cell.backgroundColor = COLOR(0xE7,0xE8,0xED,1.f);
                 break;
         }
         
