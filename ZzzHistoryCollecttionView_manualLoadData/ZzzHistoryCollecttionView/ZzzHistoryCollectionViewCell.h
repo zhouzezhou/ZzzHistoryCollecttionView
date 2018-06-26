@@ -11,5 +11,6 @@
 @interface ZzzHistoryCollectionViewCell : UICollectionViewCell
 
 @property (nonatomic, strong) UILabel *rowNumLabel;
+@property (nonatomic, strong) UIView *levelView;
 
 @end

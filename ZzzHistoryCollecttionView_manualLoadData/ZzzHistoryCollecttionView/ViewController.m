@@ -81,7 +81,7 @@
     self.collectionViewHeight = kScreenHeight - kStatusBarHeight - descriptionViewHeight;
     
     // 计算cell size
-    self.cellPaddingAll = self.collectionViewWidth / 10;
+    self.cellPaddingAll = self.collectionViewWidth / 30;
     self.cellPaddingOne = self.cellPaddingAll / (self.rowCellNum  + 1);
     self.cellWidth = (self.collectionViewWidth - self.cellPaddingAll) / self.rowCellNum;
     self.cellHeight = self.cellWidth;
@@ -118,11 +118,11 @@
     [self.view addSubview:descrpitionView];
     [descrpitionView setBackgroundColor:[UIColor whiteColor]];
     
-    self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 30)];
+    self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 34)];
     [self.dateLabel setText:@"日期"];
     [descrpitionView addSubview:self.dateLabel];
     [self.dateLabel setBackgroundColor:[UIColor whiteColor]];
-    [self.dateLabel setFont:[UIFont boldSystemFontOfSize:15.f]];
+    [self.dateLabel setFont:[UIFont boldSystemFontOfSize:18.f]];
     [self.dateLabel setTextAlignment:NSTextAlignmentCenter];
     
     self.testBtn1 = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -226,16 +226,16 @@
 
         // 相差多少天
         NSTimeInterval timeBetween = [today timeIntervalSinceDate:temp];
-        NSLog(@"timeBetween is :%f", timeBetween);
+//        NSLog(@"timeBetween is :%f", timeBetween);
 
         NSUInteger lTimeBetween = (long)timeBetween;
 
         NSUInteger daysBetween = lTimeBetween / (3600 * 24);
-        NSLog(@"between days is :%lu", (unsigned long)daysBetween);
+//        NSLog(@"between days is :%lu", (unsigned long)daysBetween);
 
         // 模拟数据 - 不同的等级
         int tempLevel = (daysBetween % 5) + 1;
-        NSLog(@"tempLevel is :%d", tempLevel);
+//        NSLog(@"tempLevel is :%d", tempLevel);
         if(daysBetween < [self.dataHistoryArray count])
         {
             [self.dataHistoryArray[daysBetween] setLevelData:tempLevel];
@@ -321,16 +321,16 @@
 
         // 相差多少天
         NSTimeInterval timeBetween = [today timeIntervalSinceDate:temp];
-        NSLog(@"timeBetween is :%f", timeBetween);
+//        NSLog(@"timeBetween is :%f", timeBetween);
 
         NSUInteger lTimeBetween = (long)timeBetween;
 
         NSUInteger daysBetween = lTimeBetween / (3600 * 24);
-        NSLog(@"between days is :%lu", (unsigned long)daysBetween);
+//        NSLog(@"between days is :%lu", (unsigned long)daysBetween);
 
         // 模拟数据 - 不同的等级
         int tempLevel = (daysBetween % 5) + 1;
-        NSLog(@"tempLevel is :%d", tempLevel);
+//        NSLog(@"tempLevel is :%d", tempLevel);
         if(daysBetween < [self.dataHistoryArray count])
         {
             [self.dataHistoryArray[daysBetween] setLevelData:tempLevel];
@@ -395,31 +395,33 @@
     }
     else
     {
-        switch ([self.dataHistoryArray[indexPath.row] levelData]) {
-            case 0:
-                cell.backgroundColor = COLOR(0xE7,0xE8,0xED,1.f);
-                break;
-            case 1:
-                cell.backgroundColor = COLOR(0X00, 0XCC, 0XFF, 1);
-                break;
-            case 2:
-                cell.backgroundColor = COLOR(0X00, 0X99, 0XFF, 1);
-                break;
-            case 3:
-                cell.backgroundColor = COLOR(0X00, 0X66, 0XFF, 1);
-                break;
-            case 4:
-                cell.backgroundColor = COLOR(0X00, 0X33, 0XFF, 1);
-                break;
-            case 5:
-                cell.backgroundColor = [UIColor blueColor];
-                break;
-                
-            default:
-                cell.backgroundColor = COLOR(0xE7,0xE8,0xED,1.f);
-                break;
-        }
-        
+        cell.backgroundColor = [UIColor whiteColor];        
+    }
+    
+    
+    switch ([self.dataHistoryArray[indexPath.row] levelData]) {
+        case 0:
+            cell.levelView.backgroundColor = COLOR(0xE7,0xE8,0xED,1.f);
+            break;
+        case 1:
+            cell.levelView.backgroundColor = COLOR(0X00, 0XCC, 0XFF, 1);
+            break;
+        case 2:
+            cell.levelView.backgroundColor = COLOR(0X00, 0X99, 0XFF, 1);
+            break;
+        case 3:
+            cell.levelView.backgroundColor = COLOR(0X00, 0X66, 0XFF, 1);
+            break;
+        case 4:
+            cell.levelView.backgroundColor = COLOR(0X00, 0X33, 0XFF, 1);
+            break;
+        case 5:
+            cell.levelView.backgroundColor = [UIColor blueColor];
+            break;
+            
+        default:
+            cell.levelView.backgroundColor = COLOR(0xE7,0xE8,0xED,1.f);
+            break;
     }
     
     NSString *monthStr = [self isFirstDayForMonth:[self.dataHistoryArray[indexPath.row] date]];
