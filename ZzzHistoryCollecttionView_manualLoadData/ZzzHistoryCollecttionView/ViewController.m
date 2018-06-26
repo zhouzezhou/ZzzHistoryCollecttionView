@@ -24,7 +24,7 @@
 
 @interface ViewController () <UICollectionViewDelegate, UICollectionViewDataSource>
 
-@property (nonatomic, strong) UICollectionView *mainCollectionView;
+@property (nonatomic, strong) UICollectionView *historyCollectionView;
 
 
 // collectionView size
@@ -97,20 +97,20 @@
     
     //2.初始化collectionView
     CGRect collectionViewRect = CGRectMake(self.collectionViewHorPadding, kScreenHeight - self.collectionViewHeight, self.collectionViewWidth, self.collectionViewHeight);
-    self.mainCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewRect collectionViewLayout:layout];
-    [self.view addSubview:self.mainCollectionView];
-    self.mainCollectionView.backgroundColor = [UIColor greenColor];
+    self.historyCollectionView = [[UICollectionView alloc] initWithFrame:collectionViewRect collectionViewLayout:layout];
+    [self.view addSubview:self.historyCollectionView];
+    self.historyCollectionView.backgroundColor = [UIColor greenColor];
     
     //3.注册collectionViewCell
     //注意，此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致 均为 cellId
-    [self.mainCollectionView registerClass:[ZzzHistoryCollectionViewCell class] forCellWithReuseIdentifier:@"ZzzHistoryCollectionViewCellId"];
+    [self.historyCollectionView registerClass:[ZzzHistoryCollectionViewCell class] forCellWithReuseIdentifier:@"ZzzHistoryCollectionViewCellId"];
     
     //注册headerView  此处的ReuseIdentifier 必须和 cellForItemAtIndexPath 方法中 一致  均为reusableView
-    //    [self.mainCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableView"];
+    //    [self.historyCollectionView registerClass:[UICollectionReusableView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"reusableView"];
     
     //4.设置代理
-    self.mainCollectionView.delegate = self;
-    self.mainCollectionView.dataSource = self;
+    self.historyCollectionView.delegate = self;
+    self.historyCollectionView.dataSource = self;
     
     
     //  顶部的详细内容显示区
@@ -192,7 +192,6 @@
     }
     
     NSLog(@"Array count is :%ld", [self.dataHistoryArray count]);
-    [self.mainCollectionView reloadData];
     
     // 模拟在特定的日期加上不同的内容,此数据应来自数据库
     NSArray *dataLevelArray = [NSArray arrayWithObjects:
@@ -237,8 +236,9 @@
         {
             [self.dataHistoryArray[daysBetween] setLevelData:tempLevel];
         }
-
     }
+    
+    [self.historyCollectionView reloadData];
 }
 
 
@@ -286,7 +286,6 @@
     }
     
     NSLog(@"Array count is :%ld", [self.dataHistoryArray count]);
-    [self.mainCollectionView reloadData];
     
     // 模拟在特定的日期加上不同的内容,此数据应来自数据库
     NSArray *dataLevelArray = [NSArray arrayWithObjects:
@@ -332,8 +331,9 @@
         {
             [self.dataHistoryArray[daysBetween] setLevelData:tempLevel];
         }
-
     }
+    
+    [self.historyCollectionView reloadData];
 }
 
 - (NSDate *)formatDateByDayBeforeNow:(NSInteger) day nowDate:(NSDate *) now
@@ -427,11 +427,11 @@
     }
     else
     {
-        [cell.rowNumLabel setText:[NSString stringWithFormat:@"%ld", indexPath.row]];
+//        [cell.rowNumLabel setText:[NSString stringWithFormat:@"%ld", indexPath.row]];
         [cell.rowNumLabel setTextColor:[UIColor blackColor]];
         
         // 虽然这种情况下不显示任何rowNumLabel，但下一行代码不能注释掉，注释了之后setText之后的rowNumLabel会被重用到其它item上，导致不该出现内容的item上出现内容
-//        [cell.rowNumLabel setText:@""];
+        [cell.rowNumLabel setText:@""];
     }
     
     
